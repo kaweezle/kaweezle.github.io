@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kaweezle - Alpine based Kubernetes WSL2 distribution</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="Description" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <link rel="icon" href="_assets/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="_assets//apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="_assets//favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="_assets//favicon-16x16.png" />
+    <link rel="manifest" href="/_assets/site.webmanifest" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+    <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css" />
+    <link rel="stylesheet" href="_assets/style.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="//unpkg.com/@fortawesome/fontawesome-free/css/fontawesome.css" />
+    <link rel="stylesheet" href="//unpkg.com/@fortawesome/fontawesome-free/css/regular.css" />
+
+    <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      window.$docsify = {
+        name: 'Kaweezle',
+        repo: 'kaweezle/kaweezle',
+        executeScript: true,
+        loadSidebar: true,
+        auto2top: true,
+        maxLevel: 4,
+        subMaxLevel: 10,
+        coverpage: true,
+        onlyCover: true,
+        ga: 'G-PV4M8J89K6',
+        plugins: [
+          EditOnGithubPlugin.create(
+            'https://github.com/kaweezle/kaweezle.github.io/blob/master/docs/',
+            '',
+            'Edit this document on GitHub',
+          ),
+        ],
+        share: {
+          reddit: true,
+          linkedin: true,
+          facebook: true,
+          twitter: true,
+          whatsapp: true,
+          telegram: true,
+        },
+        'flexible-alerts': {
+          style: 'flat',
+        },
+        copyCode: {
+          buttonText: '<i class="material-icons-outlined">content_copy</i>',
+          errorText: '<i class="material-icons-outlined" style="color:red">error_outline</i>',
+          successText: '<i class="material-icons-outlined" style="color:green">done</i>',
+        },
+      };
+    </script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-themeable@0"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+    <!-- <script src="//unpkg.com/docsify-share/build/index.min.js"></script> -->
+    <script src="https://unpkg.com/docsify-plugin-flexible-alerts"></script>
+    <script src="//unpkg.com/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+    <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+    <script src="_assets/asciinema.js"></script>
+
+    <!-- Syntax highlighting -->
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-powershell.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-go.min.js"></script>
+    <script src="//unpkg.com/docsify-material-icons/dist/docsify-material-icons.min.js"></script>
+
+    <!-- Google Analytics -->
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/ga.min.js"></script>
+
+    <script>
+      // if (typeof navigator.serviceWorker !== 'undefined') {
+      //     navigator.serviceWorker.register('sw.js')
+      // }
+    </script>
+  </body>
+</html>
