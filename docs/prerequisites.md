@@ -8,7 +8,7 @@ with the following command:
 ```
 
 To run kaweezle, you'll need to have
-[WSL installed](https://docs.microsoft.com/en-us/windows/wsl/).
+[Window Subsystem for Linux installed](https://docs.microsoft.com/en-us/windows/wsl/).
 
 The simplest way to install it is to run the following command:
 
@@ -23,15 +23,17 @@ After reboot, update the kernel and set the default version to version 2:
 > wsl --set-default-version 2
 ```
 
-To use the kubernetes cluster, you will need to have kubectl installed:
+To use the kubernetes cluster, you will need to have
+[kubectl](https://kubernetes.io/docs/tasks/tools/) installed:
 
 ```powershell
 > scoop install kubectl
 ```
 
-Other tools might be of insterest, like `k9s`, `kubectx`, `kubens` or `stern`.
-All are available through scoop. You can install all of them at once with the
-following command:
+Other tools might be of insterest, like [`k9s`](https://k9scli.io/),
+[`kubectx/kubens`](https://github.com/ahmetb/kubectx) or
+[`stern`](https://github.com/wercker/stern). All are available through scoop.
+You can install all of them at once with the following command:
 
 ```powershell
 > scoop install k9s kubectx kubens stern
