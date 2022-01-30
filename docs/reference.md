@@ -8,7 +8,7 @@ Usage:
   kaweezle [command]
 
 Examples:
-kaweezeel install
+kaweezle install
 kaweezle status
 kaweezle -v debug start
 
@@ -42,6 +42,13 @@ Use "kaweezle [command] --help" for more information about a command.
 By default, the name of the WSL distribution, the cluster and context is
 `kaweezle`. You can use this option to use another name.
 
+<!-- prettier-ignore-start -->
+> [!NOTE]
+> To avoid typing `--name xxx` on each command, you can create a 
+> `$HOME\.kaweezle` file with `name: xxx` as context (see 
+> [below](#configuration-file)).
+<!-- prettier-ignore-end -->
+
 ### --json
 
 Outputs the logs in JSON format. By using this option, no more pretty printing
@@ -56,13 +63,26 @@ the `--json` command is also specified, saves the log in JSON format.
 
 Changes the verbosity level. The default verbosity level is `info`.
 
-## install
+## Configuration file
+
+You can create a file named `kaweezle` in your home directory (`$HOME` variable)
+with global flags. For instance:
+
+```yaml
+name: k8dev
+verbosity: debug
+json: true
+```
+
+## Commands
+
+### install
 
 This command installs the WSL distribution and starts the cluster.
 
 !> This commandd is outdated. Please use the [start](#start) command.
 
-## start
+### start
 
 This is the main command. This is **the** command to start the cluster.
 
@@ -76,7 +96,7 @@ It performs each of the following operations **if appropriate**:
   kubeconfig.
 - Wait for the cluster pods to be initialized.
 
-## status
+### status
 
 The `status` command gives the status of the cluster. Example:
 
@@ -87,7 +107,7 @@ The `status` command gives the status of the cluster. Example:
 └  active=12 stopped=0 unready=0
 ```
 
-## stop
+### stop
 
 The `stop` command stops the WSL distribution, hence the cluster. It is
 equivalent to running the following command:
@@ -96,7 +116,9 @@ equivalent to running the following command:
 ❯ wsl --terminate kaweezle
 ```
 
-## uninstall
+If the kubernetes cluster is running, it is stopped immediately.
+
+### uninstall
 
 The `uninstall` command uninstalls the WSL distribution. It is equivalent to
 running the following command:
@@ -108,7 +130,7 @@ running the following command:
 It also removes the `kaweezle` context from the local kubeconfig, located in
 `$env:USERPROFILE\.kube\config`.
 
-## update
+### update
 
 The `update` command updates the local copy of the WSL distribution root
 filesystem, that is located in `$env:APPLOCALDATA\kaweezle`.
