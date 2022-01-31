@@ -80,7 +80,7 @@ json: true
 
 This command installs the WSL distribution and starts the cluster.
 
-!> This commandd is outdated. Please use the [start](#start) command.
+!> This command is outdated. Please use the [start](#start) command.
 
 ### start
 

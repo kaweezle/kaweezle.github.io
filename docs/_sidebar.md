@@ -2,3 +2,4 @@
 - [Pre-requisites](prerequisites.md)
 - [Quick Start](quick-start.md)
 - [Command Reference](reference.md)
+- [How It Works](howitworks.md)
