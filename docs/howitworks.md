@@ -1,13 +1,19 @@
 # How it works
 
+## Introduction
+
+The following diagram shows how Kaweezle is structured:
+
+![architecture](_assets/arch.svg?style=centerme)
+
 ## Components
 
 Kaweezle is composed of the following projects/components:
 
 - [kaweezle-rootfs](https://github.com/kaweezle/kaweezle-rootfs): A Modified
   Alpine mini root filesystem containing the packages needed to run kubernetes.
-- [iknite](https://github.com/kaweezle/iknite): A golang based CLI managing the
-  configuration and start of the kubernetes cluster.
+- [iknite](https://github.com/kaweezle/iknite): A golang based Linux CLI
+  managing the configuration and start of the kubernetes cluster.
 - [kaweelze](https://github.com/kaweezle/kaweezle): A golang based Windows CLI
   that manages the lifecycle of the WSL distribution.
 - [scoop-bucket](https://github.com/kaweezle/scoop-bucket): A
@@ -20,17 +26,26 @@ The root filesystem is based on the Alpine mini-rootfs
 the current version is 3.15 and available
 [here](https://dl-cdn.alpinelinux.org/alpine/v3.15/releases/x86_64/alpine-minirootfs-3.15.0-x86_64.tar.gz).
 
-As such, the root filesystem provides a minimal wsl distribution, containing
+Unmodified, the root filesystem provides a minimal wsl distribution, containing
 `busybox`, `musl` and `apk`.
 
-Needed packages are added to the root filesystem. Most of them are dependencies
-of `iknite` (see below) and are located in the
-[edge](https://wiki.alpinelinux.org/wiki/Edge) packages repository. `Zsh` and
-`oh-my-zsh` are added as a convenience.
+The root filesystem build performed by the
+[Makefile](https://github.com/kaweezle/kaweezle-rootfs/blob/main/Makefile#L63)
+adds the needed packages to the root filesystem. Most of them are dependencies
+of [iknite](https://github.com/kaweezle/iknite/blob/main/.goreleaser.yaml#L54).
+and reside in the [edge](https://wiki.alpinelinux.org/wiki/Edge) packages
+repository. `Zsh` and `oh-my-zsh` are added as a convenience.
 
-The container images used by Kubernetes when starting are _pre-provisioned_
-inside the container storage. It reduces startup time by avoiding the download
-of the images.
+As the main objective is to deploy kubernetes with the less customization
+possible, we use the standard [`openrc`](https://wiki.gentoo.org/wiki/OpenRC)
+scripts. OpenRC doesn't like not being run by init. In consequence, we use the
+[chroot customization](https://wiki.gentoo.org/wiki/OpenRC#Chroot_support)
+method of the documentation.
+
+The container images used by Kubernetes are _pre-provisioned_ with
+[skopeo](https://github.com/containers/skopeo) inside the container storage of
+the root filesystem. It reduces startup time by avoiding the download of the
+images.
 
 The following is the list of pre-provisionned images.
 
@@ -50,9 +65,6 @@ quay.io/metallb/controller
 quay.io/metallb/speaker
 ```
 
-All this tasks are performed in the
-[Makefile](https://github.com/kaweezle/kaweezle-rootfs/blob/main/Makefile#L63)
-
 ### iknite
 
 The [`iknite`](https://github.com/kaweezle/iknite) command performs the
@@ -66,12 +78,31 @@ The `iknite` apk pulls the following dependencies:
 - `cri-o` is the container runtime
 - `kubelet` is the kubernetes node agent
 - `kubeadm` is the command that manages the cluster initialization
-- `kubectl` is the main kubernetes command
-- `kubelet-openrc` contains the kubelet startup files
-- `cri-o-contrib-cni` contains the CRIO CNI configuration.
+- `kubectl` is the main kubernetes client
+- `cri-o-contrib-cni` contains the CRIO CNI configuration files.
 - `git` is used by `kustomize` (via `kubectl`) to fetch base services deployment
   yaml files from github.
 - `util-linux-misc` contains tools used to manage images.
+
+Having openrc installed will automatically pull `kubelet-openrc` and
+`cri-o-openrc` by auto install rules.
+
+`iknite` has currently only one command, `start`, that performs all the
+operations to obtain a working cluster. The possible operations are:
+
+- Starting OpenRC if it's not started;
+- Deleting the cluster certificates if the IP address of the WSL Linux VM has
+  changed;
+- Running kubeadm if needed to bootstrap the cluster or renew the certificates;
+- Waiting for the cluster to be ready;
+- Running kustomize with the infrastructure minimal infrastructure payloads:
+  - [metal-lb](https://metallb.universe.tf/) to enable load balanced services,
+  - [local path provisionner](https://github.com/rancher/local-path-provisioner)
+    To be able to create PVCs,
+  - [flannel](https://github.com/flannel-io/flannel) for pod routing.
+  - [metrics-server](https://github.com/kubernetes-sigs/metrics-server) to
+    enable default metrics.
+- Installation of the kube config file for the `root` user.
 
 ### Kaweezle
 
