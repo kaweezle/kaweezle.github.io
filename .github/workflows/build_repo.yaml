@@ -1,0 +1,43 @@
+# Copyright 2022 Antoine Martin
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: Rebuild APK index
+
+on:
+  workflow_dispatch: {}
+  repository_dispatch:
+    types: [iknite-release, krmfnsops-release]
+
+jobs:
+  build-rootfs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build APK repo
+        uses: ./.github/actions/make-apkindex
+        with:
+          projects: |-
+            kaweelze/iknite
+            kaweezle/krmfnsops
+          signature_key: "${{ secrets.GPG_PRIVATE_KEY }}"
+          signature_key_name: kaweezle-devel@kaweezle.com-c9d89864.rsa
+          destination: docs/repo
+
+      - name: Commit APK repo
+        uses: EndBug/add-and-commit@v9
+        with:
+          committer_name: antoinemartin
+          committer_email: antoine@openance.com
+          message: Rebuilding APK repo
+          add: docs/repo
