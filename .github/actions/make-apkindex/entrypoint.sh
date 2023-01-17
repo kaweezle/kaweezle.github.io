@@ -53,7 +53,7 @@ for project in $INPUT_PROJECTS; do
     last_release=$(curl -Ls -o /dev/null -w %{url_effective} $base_url/releases/latest | sed -e 's#^.*/tag/##g')
     download_base_url="$base_url/releases/download/$last_release"
     echo "Last release for $project is $last_release"
-    curl -sL "$download_base_url/${project_name}_checksums.txt" | grep '.apk$' | while read apk_checksum apk_name; do
+    curl -sL "$download_base_url/SHA256SUMS" | grep '.apk$' | while read apk_checksum apk_name; do
         echo "Downloading apk $apk_name (checksum $apk_checksum)..."
         curl -sLO "$download_base_url/$apk_name"
         received_sha=$(sha256sum $apk_name | cut -d' ' -f 1)
