@@ -16,7 +16,7 @@ name: Rebuild APK index
 on:
   workflow_dispatch: {}
   repository_dispatch:
-    types: [iknite-release, krmfnsops-release]
+    types: [iknite-release, krmfnsops-release, krmfnbuiltin-release]
 
 jobs:
   build-apk-index:
